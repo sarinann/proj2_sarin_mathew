@@ -136,3 +136,63 @@ start_node = dijkstra_node_info(C2C, parent_node, start_point)
 open_list = PriorityQueue()
 closed_visited_list = {} #to store visited nodes
 open_list.put(start_node)  
+
+while True:
+    current_node = open_list.get()
+    if current_node[2] in visited_closed_list:
+        continue
+    visited_closed_list[current_node[2]] = (current_node[1])
+    if current_node[2] == goal_point:
+        print("The goal has been reached \n")
+        print("Total cost:", current_node[0])
+        print("X and Y coordinate:", current_node[2][0], current_node[2][1])
+        break
+    else:
+        C2C, parent_node, node_state = ActionMoveUp(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+
+        C2C, parent_node, node_state = ActionMoveDown(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
+        C2C, parent_node, node_state = ActionMoveLeft(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
+        C2C, parent_node, node_state = ActionMoveRight(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
+        C2C, parent_node, node_state = ActionMoveUp_left(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
+        C2C, parent_node, node_state = ActionMoveUp_right(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
+        C2C, parent_node, node_state = ActionMoveDown_left(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
+        C2C, parent_node, node_state = ActionMoveDown_right(C2C, current_node[2])
+        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
+            if current_node[2] not in visited_closed_list:
+                current_node = dijkstra_node_info(C2C, parent_node, node_state)
+                open_list.put(current_node)
+        
