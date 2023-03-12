@@ -109,3 +109,30 @@ def ActionMoveDown_right(cost, node_state):
     modified_node[0]=modified_node[0]+1
     modified_node[1]=modified_node[1]+1
     return True, cost, parent_node, modified_node
+
+start_point_x = input("Enter the x-coordinate of the start point \n")
+start_point_y = input("Enter the y-coordinate of the start point \n")
+while Obstacle_space(start_point_x, start_point_y):
+    print("These coordinates lie inside the obstacle space. Please enter new values\n")
+    start_point_x = input("Enter the x-coordinate of the start point \n")
+    start_point_y = input("Enter the y-coordinate of the start point \n")
+
+goal_point_x = input("Enter the x-coordinate of the goal point \n")
+goal_point_y = input("Enter the y-coordinate of the goal point \n")
+while Obstacle_space(goal_point_x, goal_point_y):
+    print("These coordinates lie inside the obstacle space. Please enter new values\n")
+    goal_point_x = input("Enter the x-coordinate of the goal point \n")
+    goal_point_y = input("Enter the y-coordinate of the goal point \n")
+
+def dijkstra_node_info(cost_to_come, Parent_Node_Index_i, current_node):
+    dijkstra_node = [cost_to_come, Parent_Node_Index_i, current_node]
+    return dijkstra_node
+
+start_point= (int(start_point_x), int(start_point_y))
+goal_point= (int(goal_point_x), int(goal_point_y))
+C2C = 0
+parent_node = None
+start_node = dijkstra_node_info(C2C, parent_node, start_point)
+open_list = PriorityQueue()
+closed_visited_list = {} #to store visited nodes
+open_list.put(start_node)  
