@@ -44,3 +44,68 @@ def Obstacle_space(x, y):
         return True
     else:
         return False
+
+# def xy_coordinate(node_state):
+#     i,j =0
+#     x = node_state
+    
+ # Defining the movements: up. left. right, down, up left, up right, down left and down right   
+def ActionMoveUp(cost, node_state):
+    cost+=1
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[1]=modified_node[1]+1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveDown(cost, node_state):
+    cost+=1
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[1]=modified_node[1]-1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveLeft(cost, node_state):
+    cost+=1
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[0]=modified_node[0]-1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveRight(cost, node_state):
+    cost+=1
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[0]=modified_node[0]+1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveUp_left(cost, node_state):
+    cost+=1.4
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[0]=modified_node[0]-1
+    modified_node[1]=modified_node[1]+1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveUp_right(cost, node_state):
+    cost+=1.4
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[0]=modified_node[0]+1
+    modified_node[1]=modified_node[1]+1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveDown_left(cost, node_state):
+    cost+=1.4
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[0]=modified_node[0]-1
+    modified_node[1]=modified_node[1]-1
+    return True, cost, parent_node, modified_node
+
+def ActionMoveDown_right(cost, node_state):
+    cost+=1.4
+    parent_node = node_state
+    modified_node = copy.deepcopy(node_state)    
+    modified_node[0]=modified_node[0]+1
+    modified_node[1]=modified_node[1]+1
+    return True, cost, parent_node, modified_node
