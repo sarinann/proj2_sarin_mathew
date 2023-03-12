@@ -200,52 +200,52 @@ while True:
             if current_node[2] not in visited_closed_list:
                 open_list.put(current_node)
 
-#Backtracking function
-generated_path = []
-temp = goal_point
-while temp != goal_point:
-    generated_path.append(temp)
-    generated_path = visited_closed_list[current_node[2]]   
-generated_path.append(start_point)
-generated_path.reverse()
+def dijkstra_algo(start, goal):
+    #Initializing the start node
+    start_node = dijkstra_node_create(0, None, start)
+    #Intializing the queue
+    open_queue = PriorityQueue()
+    open_queue.put(start_node)
 
+    #initialize the dictionary to hold the path cost from start to every node
+    cost_from_start = {start: 0}
 
-x = [] #to store respective values from generated path
-y = []
-for i in range(len(generated_path)):
-    x.append(generated_path[i][0])
-    y.append(generated_path[i][1])
+    #initialize the dictionary to hold the parent node for each visited node
+    visited_closed_dict = {start: None}
 
-plt.ylabel('Y-axis')
-plt.xlabel('X-axis')
-plt.axis([0 , 600 , 0 ,250])
+    while not open_queue.empty():
+        #Remove and return the lowest-cost node
+        current_node = open_queue.get()
+        
+        #Check if we have reached the goal coordinates
+        if current_node[2] == goal:
+            #return the path by backtracking from goal to start
+            generated_path = []
+            while current_node is not None:
+                generated_path.append(current_node[2])
+                current_node = visited_closed_dict[current_node[2]]
+            #Reverse the path and return
+            return generated_path[::-1]
+        
+        #If the goal is not reached, expand the current node
+        actions = [ActionMoveUp, ActionMoveDown, ActionMoveLeft, ActionMoveRight, ActionMoveUp_left, ActionMoveUp_right, ActionMoveDown_left, ActionMoveDown_right]
+        for action in actions:
+            #Get the modified node and its cost to move from current node
+            new_node = action(current_node)
+            cost = new_node[0]
+            
+            #If the node is not in the cost dictionary, add it with infinite cost
+            if new_node[2] not in cost_from_start:
+                cost_from_start[new_node[2]] = float('inf')
+            
+            #Check if the cost to reach the new node is less than the recorded cost, update the cost and visited node
+            if cost < cost_from_start[new_node[2]]:
+                cost_from_start[new_node[2]] = cost
+                visited_closed_dict[new_node[2]] = current_node
+                
+                #Add the new node to the queue
+                open_queue.put(new_node)
 
-temp_x = 0
-temp_y = 0
-plt.title("Plotting Visited list")
-for i in range(len(a)) :
-    if temp_x == goal_point[0] and temp_y == goal_point[1] :
-        break
-    if len(visited_x_coord)>100:
-        plt.scatter(visited_x_coord[0:100] , visited_y_coord[0:100] , c='green' , s=1)
-        plt.pause(0.0005)
-        del visited_x_coord[:100]
-        del visited_y_coord[:100]
-    else :
-        for j in range(len(visited_y_coord)):
-            plt.scatter(visited_x_coord[j] , visited_y_coord[j] , c='green' , s=1)
-            plt.pause(0.0005)
-            temp_x = visited_x_coord[j]
-            temp_y = visited_y_coord[j]
-            if visited_x_coord[j] == goal_point[0] and visited_y_coord[j] == goal_point[1] :
-                break
-
-
-
-plt.title("Shortest path generated")
-for i in range(len(x)):
-    plt.scatter(x[i] , y[i] , c='red' , s=2, marker='D')
-    plt.pause(0.00005)
-
-plt.show
+    #If the goal is not reached and the queue is empty, there is no path to the goal
+    return None
 
