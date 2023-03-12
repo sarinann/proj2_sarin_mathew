@@ -1,0 +1,46 @@
+import cv2
+import time
+from queue import PriorityQueue
+import matplotlib.pyplot as plt
+import numpy as np
+import pygame 
+import copy
+
+#Defining the four walls. The point should lie within the boundary
+def Main_Wall(x, y):
+    if (x<=0) or (x>=600) or (y<=0) or (y>=250):
+        return True
+    else:
+        return False
+
+#Creating and defining obstacle spaces
+def Rectangle_Top(x, y):
+    if (x >=100) and (x <=150) and (y>=150) and (y<=250):
+        return True
+    else:
+        return False
+
+def Rectangle_Bottom(x, y):
+    if (x >=100) and (x <=150) and (y>=0) and (y<=100):
+        return True
+    else:
+        return False
+    
+def Triangle(x, y):
+    if (x>=460) and (((y-25)-(2*(x-460)))>=0) and (((y-125)-((-2)*(x-510)))>=0):
+        return True
+    else:
+        return False
+
+def Hexagon(x, y):
+    # if (x>=85.05) and (x<=214.95) and (((y-50)-(((87.5-50)/(364.95-300))*(x-300)))>=0) and (((y-50)-(((87.5-50)/(235.05-300))*(x-300)))>=0) and (((y-162.5)-(((162.5-200)/(364.95-300))*(x-364.95)))<=0) and (((y-162.5)-(((162.5-200)/(235.05-300))*(x-235.05)))<=0):
+    if (x>=235.05) and (x<=364.95) and (((y-50)-(0.577*(x-300)))>=0) and (((y-50)-((-0.577)*(x-300)))>=0) and (((y-162.5)-((-0.577)*(x-364.95)))<=0) and (((y-162.5)-((0.577)*(x-235.05)))<=0):
+        return True
+    else:
+        return False
+    
+def Obstacle_space(x, y):
+    if (Main_Wall(x, y) or Rectangle_Top(x, y) or Rectangle_Bottom(x, y) or Triangle(x, y) or Hexagon(x, y)) == True:
+        return True
+    else:
+        return False
