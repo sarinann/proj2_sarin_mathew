@@ -247,4 +247,65 @@ def dijkstra_algo(start, goal):
 
     #If the goal is not reached and the queue is empty, there is no path to the goal
     return None
+    
+generated_path, x_visited, y_visited = dijkstra_algo(start, goal)
+end_time = time.time()
+print(generated_path)
+print(f'Time taken to solve the path using the algorithm: {end_time - start_time}\n')
+path_x_coord = [] 
+path_y_coord = []
+for i in range(len(generated_path)):
+    path_x_coord.append(generated_path[i][0])
+    path_y_coord.append(generated_path[i][1])
+
+fig, ax = plt.subplots(figsize=(6,2.5))
+
+Rectangle_Bottom = patch.Rectangle((100, 150), 50, 100, linewidth=1, edgecolor='b', facecolor='b')
+Rectangle_Top = patch.Rectangle((100, 0), 50, 100, linewidth=1, edgecolor='b', facecolor='b')
+Hexagon = patch.RegularPolygon((300, 125), 6, 75, linewidth=1, edgecolor='b', facecolor='b')
+Triangle = patch.Polygon([(460, 25), (460, 225), (510, 125)], linewidth=1, edgecolor='b', facecolor='b')
+
+ax.add_patch(Rectangle_Bottom)
+ax.add_patch(Rectangle_Top)
+ax.add_patch(Hexagon)
+ax.add_patch(Triangle)
+
+#Plotting the path
+plt.xlabel('X-Axis')
+plt.ylabel('Y-Axis')
+plt.title("Visualizing Explored Nodes through Dijkstra Algorithm")
+plt.axis([0 , 600 , 0 ,250])
+
+x_temp = 0
+y_temp = 0
+
+for i in range(len(x_visited)) :
+    if x_temp == goal[0] and y_temp == goal[1] :
+        break
+    if len(x_visited)>100:
+        plt.scatter(x_visited[0:100] , y_visited[0:100] , c='red' , s=1)
+        plt.pause(0.0005)
+        del x_visited[:100]
+        del x_visited[:100]
+    else :
+        for j in range(len(x_visited)):
+            plt.scatter(x_visited[j] , y_visited[j] , c='red' , s=1)
+            plt.pause(0.0005)
+            x_temp = x_visited[j]
+            y_temp = x_visited[j]
+            if x_visited[j] == goal[0] and y_visited[j] == goal[1] :
+                break
+
+# for j in range(len(x_visited)):
+#             plt.scatter(x_visited[j] , y_visited[j] , c='red' , s=1)
+#             plt.pause(0.0005)
+#             if x_visited[j] == goal[0] and y_visited[j] == goal[1] :
+#                 break
+
+plt.title("Shortest Path traced by Point Robot")
+for i in range(len(path_x_coord)):
+    plt.scatter(path_x_coord[i] , path_y_coord[i] , c='yellow' , s=2, marker='D')
+    plt.pause(0.0005)
+plt.waitforbuttonpress(timeout=-1)
+plt.show
 
