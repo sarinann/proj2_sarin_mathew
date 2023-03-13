@@ -1,9 +1,7 @@
-import cv2
-import time
-from queue import PriorityQueue
 import matplotlib.pyplot as plt
-import numpy as np
-import pygame 
+import matplotlib.patches as patch
+from queue import PriorityQueue
+import time
 import copy
 
 start_time = time.time()
@@ -27,7 +25,7 @@ def Rectangle_Bottom(x, y):
         return False
 
 def Triangle(x, y):
-    if x>= 455 and (((y-246.18)-(((246.18-125)/(455-515.59))*(x-455))) <= 0) and (((y-125)-(((125-3.81)/(515.19-455))*(x-515.59))) >= 0):
+     if (x>= 455) and (((y-240)-(((240-125)/(455-515))*(x-455)))<=0) and (((y-125)-(((125-10)/(515-455))*(x-515)))>=0):
         return True
     else:
         return False
@@ -43,161 +41,90 @@ def Obstacle_space(x, y):
         return True
     else:
         return False
+        
+def dijkstra_node_create(cost, parent, node):
+    return (cost, parent, node)
 
  # Defining the movements: up. left. right, down, up left, up right, down left and down right   
 def ActionMoveUp(node):
-    node[0]+=1
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][1]=modified_node[2][1]+1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]   
+    y_coord = modified_node[2][1]+1
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def ActionMoveDown(node):
-    node[0]+=1
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][1]=modified_node[2][1]-1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]   
+    y_coord =modified_node[2][1]-1
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def ActionMoveLeft(node):
-    node[0]+=1
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][0]=modified_node[2][0]-1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]-1
+    y_coord =modified_node[2][1]
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def ActionMoveRight(node):
-    node[0]+=1
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][0]=modified_node[2][0]+1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
-
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]+1   
+    y_coord =modified_node[2][1]
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
+    
 def ActionMoveUp_left(node):
-    node[0]+=1.4
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][1]=modified_node[2][1]+1
-    modified_node[2][0]=modified_node[2][0]-1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1.4
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]-1   
+    y_coord =modified_node[2][1]+1
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def ActionMoveUp_right(node):
-    node[0]+=1.4
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][1]=modified_node[2][1]+1
-    modified_node[2][0]=modified_node[2][0]+1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1.4
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]+1   
+    y_coord =modified_node[2][1]+1
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def ActionMoveDown_left(node):
-    node[0]+=1.4
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][1]=modified_node[2][1]-1
-    modified_node[2][0]=modified_node[2][0]-1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1.4
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]-1   
+    y_coord =modified_node[2][1]-1
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def ActionMoveDown_right(node):
-    node[0]+=1.4
-    parent_node = node[2]
-    modified_node = copy.deepcopy(node)    
-    modified_node[2][1]=modified_node[2][1]-1
-    modified_node[2][0]=modified_node[2][0]+1
-    passed_node = dijkstra_node_info(node[0], parent_node, modified_node)
-    return True, passed_node
-
-    
-# start_point_x = input("Enter the x-coordinate of the start point \n")
-# start_point_y = input("Enter the y-coordinate of the start point \n")
-# while Obstacle_space(int(start_point_x), int(start_point_y)):
-#     print("These coordinates lie inside the obstacle space. Please enter new values\n")
-#     start_point_x = input("Enter the x-coordinate of the start point \n")
-#     start_point_y = input("Enter the y-coordinate of the start point \n")
-
-# goal_point_x = input("Enter the x-coordinate of the goal point \n")
-# goal_point_y = input("Enter the y-coordinate of the goal point \n")
-# while Obstacle_space(int(start_point_x), int(start_point_y)):
-#     print("These coordinates lie inside the obstacle space. Please enter new values\n")
-#     goal_point_x = input("Enter the x-coordinate of the goal point \n")
-#     goal_point_y = input("Enter the y-coordinate of the goal point \n")
-
-def dijkstra_node_info(cost_to_come, Parent_Node_Index_i, current_node):
-    dijkstra_node = [cost_to_come, Parent_Node_Index_i, current_node]
-    return dijkstra_node
-
-# start_point= [int(start_point_x), int(start_point_y)]
-# goal_point= [int(goal_point_x), int(goal_point_y)]
-start_point= (50, 50)
-goal_point= (580, 240)
-C2C = 0
-parent_node = None
-start_node = dijkstra_node_info(C2C, parent_node, start_point)
-open_list = PriorityQueue()
-visited_closed_list = {} #to store visited nodes
-open_list.put(start_node)    
-visited_x_coord = []
-visited_y_coord =[]
-
-while True:
-    current_node = open_list.get()
-    if current_node[2] in visited_closed_list:
-        continue
-    visited_x_coord.append(current_node[2][0])
-    visited_y_coord.append(current_node[2][1])
-    visited_closed_list[current_node[2]] = (current_node[1])
-    if current_node[2] == goal_point:
-        print("The goal has been reached \n")
-        print("Total cost:", current_node[0])
-        print("X and Y coordinate:", current_node[2][0], current_node[2][1])
-        break
-    else:
-        current_node = ActionMoveUp(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                # current_node = dijkstra_node_info(C2C, parent_node, node)
-                open_list.put(current_node)
-
-        current_node = ActionMoveDown(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
-        
-        current_node = ActionMoveLeft(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
-        
-        current_node = ActionMoveRight(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
-        
-        current_node = ActionMoveUp_left(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
-        
-        current_node = ActionMoveUp_right(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
-        
-        current_node = ActionMoveDown_left(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
-        
-        current_node = ActionMoveDown_right(current_node)
-        if Obstacle_space(current_node[2][0], current_node[2][0]) == False:
-            if current_node[2] not in visited_closed_list:
-                open_list.put(current_node)
+    modified_node = copy.deepcopy(node)
+    cost = modified_node[0]+1.4
+    parent_node = modified_node[2]
+    x_coord = modified_node[2][0]+1   
+    y_coord =modified_node[2][1]-1
+    modified_node = (x_coord, y_coord)
+    passed_node = dijkstra_node_create(cost, parent_node, modified_node)
+    return passed_node
 
 def dijkstra_algo(start, goal):
     #Initializing the start node
@@ -205,53 +132,85 @@ def dijkstra_algo(start, goal):
     #Intializing the queue
     open_queue = PriorityQueue()
     open_queue.put(start_node)
+    all_x_visited =[]
+    all_y_visited =[]
 
     #initialize the dictionary to hold the path cost from start to every node
     cost_from_start = {start: 0}
 
     #initialize the dictionary to hold the parent node for each visited node
-    visited_closed_dict = {start: None}
+    visited_closed_dict = {}
 
     while not open_queue.empty():
         #Remove and return the lowest-cost node
-        current_node = open_queue.get()
+        present_node = open_queue.get()
         
+        if present_node[2] in visited_closed_dict: 
+            continue
+
+        all_x_visited.append(present_node[2][0]) 
+        all_y_visited.append(present_node[2][1])
+
+        visited_closed_dict[present_node[2]] = (present_node[1]) 
+               
         #Check if we have reached the goal coordinates
-        if current_node[2] == goal:
+        if present_node[2] == goal:
             #return the path by backtracking from goal to start
             generated_path = []
-            while current_node is not None:
-                generated_path.append(current_node[2])
-                current_node = visited_closed_dict[current_node[2]]
+            current_pose = present_node[2] 
+            while current_pose is not None:
+                generated_path.append(current_pose)
+                current_pose = visited_closed_dict[current_pose]
             #Reverse the path and return
-            return generated_path[::-1]
+            return generated_path[::-1], all_x_visited, all_y_visited
         
         #If the goal is not reached, expand the current node
         actions = [ActionMoveUp, ActionMoveDown, ActionMoveLeft, ActionMoveRight, ActionMoveUp_left, ActionMoveUp_right, ActionMoveDown_left, ActionMoveDown_right]
         for action in actions:
             #Get the modified node and its cost to move from current node
-            new_node = action(current_node)
-            cost = new_node[0]
-            
-            #If the node is not in the cost dictionary, add it with infinite cost
-            if new_node[2] not in cost_from_start:
-                cost_from_start[new_node[2]] = float('inf')
-            
-            #Check if the cost to reach the new node is less than the recorded cost, update the cost and visited node
-            if cost < cost_from_start[new_node[2]]:
-                cost_from_start[new_node[2]] = cost
-                visited_closed_dict[new_node[2]] = current_node
+            new_node = action(present_node)
+            if Obstacle_space(new_node[2][0], new_node[2][1]) == False:
+                cost2come = new_node[0]            
+                #If the node is not in the cost dictionary, add it with infinite cost
+                if new_node[2] not in visited_closed_dict:
+                    for i in range(0,(open_queue.qsize())):
+                        if open_queue.queue[i][2] == new_node[2] and open_queue.queue[i][0] > cost2come:
+                            open_queue.queue[i][1] == new_node[1]
+                    open_queue.put(new_node)
+                    cost_from_start[new_node[2]] = float('inf')
                 
-                #Add the new node to the queue
-                open_queue.put(new_node)
-
     #If the goal is not reached and the queue is empty, there is no path to the goal
     return None
+
+start_point_x = input("Enter the x-coordinate of the start point \n")
+start_point_y = input("Enter the y-coordinate of the start point \n")
+start= (int(start_point_x), int(start_point_y))
+while Obstacle_space(start[0], start[1]):
+    print("These coordinates lie inside the obstacle space. Please enter new values\n")
+    start_point_x = input("Enter the x-coordinate of the start point \n")
+    start_point_y = input("Enter the y-coordinate of the start point \n")
+    start= (int(start_point_x), int(start_point_y))
+
+goal_point_x = input("Enter the x-coordinate of the goal point \n")
+goal_point_y = input("Enter the y-coordinate of the goal point \n")
+goal= (int(goal_point_x), int(goal_point_y))
+while Obstacle_space(goal[0], goal[1]):
+    print("These coordinates lie inside the obstacle space. Please enter new values\n")
+    goal_point_x = input("Enter the x-coordinate of the goal point \n")
+    goal_point_y = input("Enter the y-coordinate of the goal point \n")
+    goal= (int(goal_point_x), int(goal_point_y))
     
 generated_path, x_visited, y_visited = dijkstra_algo(start, goal)
 end_time = time.time()
-print(generated_path)
-print(f'Time taken to solve the path using the algorithm: {end_time - start_time}\n')
+print("Reached Goal")
+# print("The generated path is")
+# print(generated_path)
+# print("The x_coordinates of the visited nodes")
+# print(x_visited)
+# print("The y_coordinates of the visited nodes")
+# print(y_visited)
+print(f'Time taken to solve using the Dijkstra algorithm: {end_time - start_time}\n')
+
 path_x_coord = [] 
 path_y_coord = []
 for i in range(len(generated_path)):
@@ -259,16 +218,15 @@ for i in range(len(generated_path)):
     path_y_coord.append(generated_path[i][1])
 
 fig, ax = plt.subplots(figsize=(6,2.5))
-
-Rectangle_Bottom = patch.Rectangle((100, 150), 50, 100, linewidth=1, edgecolor='b', facecolor='b')
-Rectangle_Top = patch.Rectangle((100, 0), 50, 100, linewidth=1, edgecolor='b', facecolor='b')
-Hexagon = patch.RegularPolygon((300, 125), 6, 75, linewidth=1, edgecolor='b', facecolor='b')
-Triangle = patch.Polygon([(460, 25), (460, 225), (510, 125)], linewidth=1, edgecolor='b', facecolor='b')
-
+Triangle = patch.Polygon([(460, 25), (460, 225), (510, 125)], linewidth=1, edgecolor='r', facecolor='r')
+Rectangle_Bottom = patch.Rectangle((100, 150), 50, 100, linewidth=1, edgecolor='r', facecolor='r')
+Rectangle_Top = patch.Rectangle((100, 0), 50, 100, linewidth=1, edgecolor='r', facecolor='r')
+Hexagon = patch.RegularPolygon((300, 125), 6, 75, linewidth=1, edgecolor='r', facecolor='r')
+#Plotting the obstacles
+ax.add_patch(Triangle)
 ax.add_patch(Rectangle_Bottom)
 ax.add_patch(Rectangle_Top)
 ax.add_patch(Hexagon)
-ax.add_patch(Triangle)
 
 #Plotting the path
 plt.xlabel('X-Axis')
@@ -283,16 +241,16 @@ for i in range(len(x_visited)) :
     if x_temp == goal[0] and y_temp == goal[1] :
         break
     if len(x_visited)>100:
-        plt.scatter(x_visited[0:100] , y_visited[0:100] , c='red' , s=1)
+        plt.scatter(x_visited[0:100] , y_visited[0:100] , c='blue' , s=1)
         plt.pause(0.0005)
         del x_visited[:100]
-        del x_visited[:100]
+        del y_visited[:100]
     else :
         for j in range(len(x_visited)):
-            plt.scatter(x_visited[j] , y_visited[j] , c='red' , s=1)
+            plt.scatter(x_visited[j] , y_visited[j] , c='blue' , s=1)
             plt.pause(0.0005)
             x_temp = x_visited[j]
-            y_temp = x_visited[j]
+            y_temp = y_visited[j]
             if x_visited[j] == goal[0] and y_visited[j] == goal[1] :
                 break
 
@@ -302,7 +260,7 @@ for i in range(len(x_visited)) :
 #             if x_visited[j] == goal[0] and y_visited[j] == goal[1] :
 #                 break
 
-plt.title("Shortest Path traced by Point Robot")
+plt.title("The shortest Path travelled by the point robot")
 for i in range(len(path_x_coord)):
     plt.scatter(path_x_coord[i] , path_y_coord[i] , c='yellow' , s=2, marker='D')
     plt.pause(0.0005)
